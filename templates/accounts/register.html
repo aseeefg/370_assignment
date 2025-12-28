@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+      <article class="card-body">
+        {% include 'includes/alerts.html' %}
+        <header class="mb-4"><h4 class="card-title">Sign up</h4></header>
+        <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>First name</label>
+                    {{form.first_name}}
+                </div>
+                <div class="col form-group">
+                    <label>Last name</label>
+                    {{ form.last_name}}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label>Email</label>
+                  {{form.email}}
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Phone</label>
+                  {{form.phone_number}}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Create password</label>
+                    {{form.password}}
+                </div> 
+                <div class="form-group col-md-6">
+                    <label>Repeat password</label>
+                     {{form.confirm_password}}
+                </div>  
+            </div>
+
+            <div class="form-group">
+                <label class="d-block">Register as a:</label>
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input class="custom-control-input" type="radio" name="user_role" value="patient" checked onclick="toggleDoctorFields(false)">
+                    <span class="custom-control-label"> Patient </span>
+                </label>
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input class="custom-control-input" type="radio" name="user_role" value="doctor" onclick="toggleDoctorFields(true)">
+                    <span class="custom-control-label"> Doctor </span>
+                </label>
+            </div>
+
+            <div id="doctor-info" style="display: none;" class="border-top pt-3 mb-3">
+                <h6 class="text-primary mb-3">Doctor Professional Details</h6>
+                <div class="form-group">
+                    <label>Specialization</label>
+                    <select name="specialization" class="form-control">
+                        <option value="General Physician">General Physician</option>
+                        <option value="Cardiologist">Cardiologist</option>
+                        <option value="Pediatrician">Pediatrician</option>
+                        <option value="Dermatologist">Dermatologist</option>
+                        <option value="Neurologist">Neurologist</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Available Days</label>
+                        <input type="text" name="available_days" class="form-control" placeholder="e.g. Mon-Fri">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Available Time</label>
+                        <input type="time" name="available_time" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block"> Register </button>
+            </div>      
+            
+            {{form.email.errors}} 
+            {{ form.non_field_errors }}
+        </form>
+      </article>
+    </div>
+    <p class="text-center mt-4">Have an account? <a href="{% url 'login' %}">Log in</a></p>
+</section>
+
+<script>
+    function toggleDoctorFields(show) {
+        var doctorDiv = document.getElementById('doctor-info');
+        if (show) {
+            doctorDiv.style.display = 'block';
+        } else {
+            doctorDiv.style.display = 'none';
+        }
+    }
+</script>
+
+{% endblock %}

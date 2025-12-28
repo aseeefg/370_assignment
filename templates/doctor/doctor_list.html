@@ -1,0 +1,59 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<section class="section-content padding-y bg">
+<div class="container">
+<div class="row">
+    {% if doctors %}
+        {% for doctor in doctors %}
+        <div class="col-md-3">
+            <figure class="card card-product-grid">
+                <div class="img-wrap"> 
+                  <img src="{% static 'images/default_doc.jpg' %}">
+                </div>
+                <figcaption class="info-wrap">
+                    <div class="fix-height">
+                        <a href="{% url 'book_appointment' doctor.user_id %}"class="title">Dr. {{ doctor.first_name }} {{ doctor.last_name }}</a>
+                        
+                        <div class="price-wrap mt-2">
+                            {% if doctor.doctor_profile %}
+                                <span class="badge badge-light text-primary">
+                                    {{ doctor.doctor_profile.specialization }}
+                                </span>
+                                
+                                <small class="d-block text-muted mt-1">
+                                    <i class="fa fa-calendar"></i> {{ doctor.doctor_profile.available_days }}
+                                </small>
+                                <small class="d-block text-muted">
+                                    <i class="fa fa-clock"></i> {{ doctor.doctor_profile.available_time }}
+                                </small>
+                            {% else %}
+                                <span class="price text-muted">General Physician</span>
+                            {% endif %}
+                        </div> 
+                    </div>
+
+                    {% if doctor.user_id %}
+                        <a href="{% url 'book_appointment' doctor.user_id %}" class="btn btn-block btn-primary">
+                            Book Appointment
+                        </a>
+                    {% endif %}
+                </figcaption>
+            </figure>
+        </div> 
+        {% endfor %}
+    {% else %}
+        <div class="col-md-12">
+            <h2 class="text-center">No Doctors Found</h2>
+        </div>
+    {% endif %}
+</div>
+</div>
+</section>
+
+{% endblock %}

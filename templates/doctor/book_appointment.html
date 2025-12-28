@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="section-content padding-y bg">
+<div class="container">
+    <div class="card mx-auto" style="max-width:520px;">
+        <article class="card-body">
+            <header class="mb-4"><h4 class="card-title">Book Appointment with Dr. {{ doctor.last_name }}</h4></header>
+            <form action="{% url 'book_appointment' doctor.user_id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label>Select Date</label>
+                    <input type="date" name="appointment_date" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Prescription (Optional)</label>
+                    <input type="file" name="prescription" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Message for Doctor</label>
+                    <textarea name="message" class="form-control" rows="3" placeholder="Describe your symptoms..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Confirm Booking Request</button>
+            </form>
+        </article>
+    </div>
+</div>
+</section>
+
+{% endblock %}

@@ -23,6 +23,8 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",views.home, name="home"),# empty string means home page no suffix added
-    #path('cart/',include('carts.urls')),
+    path('cart/',include('carts.urls')),
     path('store/', include('store.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('doctors/', include('doctor.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

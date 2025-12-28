@@ -4,8 +4,10 @@ from .models import Product
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_dislay= ('product_name', 'price' , 'stock', 'category', 'is_available')
-    prepopulated_fields = {'slug': ('product_name',)}
+    list_display= ('product_name', 'price' , 'stock', 'category', 'is_available')
+    filter_horizontal=()
+    list_filter=()
+    fieldsets = ()
     
 
 admin.site.register(Product,ProductAdmin)

@@ -3,10 +3,9 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 
-
 # Create your models here.
 class MyAccountManager(BaseUserManager):
-    def create_user(self, first_name , last_name, username, email, password=None):
+    def create_user(self, first_name , last_name, username, email, password=None, is_doctor=False, is_patient=False):
         if not email:
             raise ValueError('Email address is not given')
         
@@ -18,7 +17,10 @@ class MyAccountManager(BaseUserManager):
             username = username,
             first_name= first_name,
             last_name = last_name,
+            is_doctor= is_doctor,    # Added this
+            is_patient= is_patient,
         )
+        
         user.set_password(password)
         user.save(using=self._db)
         return user 
@@ -28,7 +30,10 @@ class MyAccountManager(BaseUserManager):
             username = username,
             first_name= first_name,
             last_name = last_name,
-            password =password
+            password =password,
+            # Admins are neither doctors nor patients by default
+            is_doctor=False,
+            is_patient=False,
         )
 
         user.is_admin= True
@@ -44,6 +49,7 @@ class MyAccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
+    user_id = models.AutoField(primary_key=True)
     first_name= models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
@@ -55,8 +61,10 @@ class Account(AbstractBaseUser):
     last_login= models.DateField(auto_now=True)
     is_admin= models.BooleanField(default=False)
     is_staff =models.BooleanField(default=False)
-    is_active= models.BooleanField(default=False)
+    is_active= models.BooleanField(default=True)
     is_superadmin= models.BooleanField(default=False)
+    is_doctor = models.BooleanField(default=False)
+    is_patient = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS =['username', 'first_name', 'last_name']
